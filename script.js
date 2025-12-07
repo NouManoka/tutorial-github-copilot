@@ -14,10 +14,12 @@ const activeTasksEl = document.getElementById('active-tasks');
 const completedTasksEl = document.getElementById('completed-tasks');
 const filterBtns = document.querySelectorAll('.filter-btn');
 const clearCompletedBtn = document.getElementById('clear-completed');
+const darkModeToggle = document.getElementById('dark-mode-toggle');
 
 // ========== Initialize Application ==========
 function init() {
     loadTasks();
+    loadDarkMode();
     renderTasks();
     updateStats();
     attachEventListeners();
@@ -35,6 +37,9 @@ function attachEventListeners() {
 
     // Clear completed button
     clearCompletedBtn.addEventListener('click', handleClearCompleted);
+
+    // Dark mode toggle
+    darkModeToggle.addEventListener('click', toggleDarkMode);
 
     // Keyboard shortcuts
     document.addEventListener('keydown', handleKeyboardShortcuts);
@@ -299,6 +304,24 @@ function handleKeyboardShortcuts(e) {
     // Escape: Clear input
     if (e.key === 'Escape' && document.activeElement === taskInput) {
         taskInput.value = '';
+    }
+}
+
+// ========== Dark Mode ==========
+
+// Toggle dark mode
+function toggleDarkMode() {
+    document.body.classList.toggle('dark-mode');
+    const isDarkMode = document.body.classList.contains('dark-mode');
+    localStorage.setItem('darkMode', isDarkMode);
+    announceToScreenReader(`Dark mode ${isDarkMode ? 'enabled' : 'disabled'}`);
+}
+
+// Load dark mode preference
+function loadDarkMode() {
+    const isDarkMode = localStorage.getItem('darkMode') === 'true';
+    if (isDarkMode) {
+        document.body.classList.add('dark-mode');
     }
 }
 
